@@ -16,6 +16,6 @@ export function spCode() {
     return length(vec3(q.x,q.y-s+k,q.z-k)); 
   }``);
       
-      
+      octahedron(0.6);
   `;
 }
