@@ -1,7 +1,7 @@
 //import { glslSDF } from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
-import glslSDF} from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
+import {glslSDF} from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
 
-export const sdOctahedron = glslSDF(`
+export function sdOctahedron = glslSDF(`
  //https://iquilezles.org/articles/distfunctions/
 float sdOctahedron( vec3 p, float s){
   p = abs(p);
@@ -16,18 +16,18 @@ float sdOctahedron( vec3 p, float s){
   return length(vec3(q.x,q.y-s+k,q.z-k)); 
 }`);
 
-export const sdSphere = glslSDF(`
-  //https://www.shadertoy.com/view/7tVXRt
-float sdCutHollowSphere( vec3 p, float r, float h, float t )
-{
-  // sampling independent computations (only depend on shape)
-  float w = sqrt(r*r-h*h);
+// export default sdSphere = glslSDF(`
+//   //https://www.shadertoy.com/view/7tVXRt
+// float sdCutHollowSphere( vec3 p, float r, float h, float t )
+// {
+//   // sampling independent computations (only depend on shape)
+//   float w = sqrt(r*r-h*h);
   
-  // sampling dependant computations
-  vec2 q = vec2( length(p.xz), p.y );
-  return ((h*q.x<w*q.y) ? length(q-vec2(w,h)) : 
-                          abs(length(q)-r) ) - t;
-}
-`);
+//   // sampling dependant computations
+//   vec2 q = vec2( length(p.xz), p.y );
+//   return ((h*q.x<w*q.y) ? length(q-vec2(w,h)) : 
+//                           abs(length(q)-r) ) - t;
+// }
+// `);
 
 // add more signed distance functions as needed
