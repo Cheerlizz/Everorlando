@@ -1,6 +1,6 @@
 import { Scene, SphereGeometry, Vector3, PerspectiveCamera, WebGLRenderer, Color, MeshBasicMaterial, Mesh, Clock } from 'three';
 import { OrbitControls } from 'https://unpkg.com/three@0.146/examples/jsm/controls/OrbitControls.js';
-import { createSculptureWithGeometry,createSculpture,createSDFGeometry } from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
+import { createSculptureWithGeometry,glslSDF } from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
 import { spCode } from '/sp-code.js';
 
 let scene = new Scene();
@@ -35,16 +35,7 @@ let geometry  = new SphereGeometry(2, 45, 45);
 // let material = new MeshBasicMaterial( { color: 0x33aaee} );
 // let mesh = new Mesh(geometry, material);
 
-// let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
-//   return {
-//     time: state.time,
-//     // pointerDown: state.pointerDown,
-//     mouse: state.mouse,
-//     // audio: state.audio,
-//   }
-// })
-
-let mesh = createSculpture(spCode(), () => {
+let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
   return {
     time: state.time,
     // pointerDown: state.pointerDown,
@@ -52,6 +43,15 @@ let mesh = createSculpture(spCode(), () => {
     // audio: state.audio,
   }
 })
+
+// let mesh = createSculpture(spCode(), () => {
+//   return {
+//     time: state.time,
+//     // pointerDown: state.pointerDown,
+//     mouse: state.mouse,
+//     // audio: state.audio,
+//   }
+// })
 
 scene.add(mesh);
 
