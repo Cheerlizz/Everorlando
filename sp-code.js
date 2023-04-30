@@ -1,23 +1,7 @@
-import { glslSDF } from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
+import { sdOctahedron, sdSphere } from './sdFunctions.js';
 
 export function spCode() {
-  return `
-  
-  let octahedron = glslSDF(``
-  //https://iquilezles.org/articles/distfunctions/
-  float sdOctahedron( vec3 p, float s){
-    p = abs(p);
-    float m = p.x+p.y+p.z-s;
-    vec3 q;
-         if( 3.0*p.x < m ) q = p.xyz;
-    else if( 3.0*p.y < m ) q = p.yzx;
-    else if( 3.0*p.z < m ) q = p.zxy;
-    else return m*0.57735027;
-
-    float k = clamp(0.5*(q.z-q.y+s),0.0,s); 
-    return length(vec3(q.x,q.y-s+k,q.z-k)); 
-  }``);
-      
-      octahedron(0.6);
+  return ` 
+      sdOctahedron(0.6);
   `;
 }

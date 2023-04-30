@@ -1,6 +1,6 @@
 import { Scene, SphereGeometry, Vector3, PerspectiveCamera, WebGLRenderer, Color, MeshBasicMaterial, Mesh, Clock } from 'three';
 import { OrbitControls } from 'https://unpkg.com/three@0.146/examples/jsm/controls/OrbitControls.js';
-import { createSculptureWithGeometry,glslSDF } from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
+import { createSculptureWithGeometry} from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
 import { spCode } from '/sp-code.js';
 
 let scene = new Scene();
