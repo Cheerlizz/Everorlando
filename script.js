@@ -32,17 +32,17 @@ let state = {
 
 // create our geometry and material
 let geometry  = new SphereGeometry(2, 45, 45);
-let material = new MeshBasicMaterial( { color: 0x33aaee} );
-let mesh = new Mesh(geometry, material);
+// let material = new MeshBasicMaterial( { color: 0x33aaee} );
+// let mesh = new Mesh(geometry, material);
 
-// let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
-//   return {
-//     time: state.time,
-//     // pointerDown: state.pointerDown,
-//     mouse: state.mouse,
-//     // audio: state.audio,
-//   }
-// })
+let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
+  return {
+    time: state.time,
+    // pointerDown: state.pointerDown,
+    mouse: state.mouse,
+    // audio: state.audio,
+  }
+})
 
 scene.add(mesh);
 
