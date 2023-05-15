@@ -4,23 +4,23 @@ export function spCode() {
 // Adjust these two parameters to get a balance between performance and image quality
 setMaxIterations(600)  
 setStepSize(0.1);
-
+rotateY(time*0.2);
 //The current coordinate space
 let s = getSpace();
-occlusion(.8);
+occlusion(-10);
 
 
 let rotX= input(20);
-let rotY= input(20);
+let rotY= input();
 
-rotateX(6*length(s)+0.4*cos(s.x*0.5)+0.2*sin(time*0.4));  //change with time
-rotateX(6*length(s)+0.4*sin(s.y*0.5)+0.2*cos(time*0.4));
+rotateX(6*length(s)+0.4*cos(s.x*0.3));  //change with time
+rotateX(6*length(s)+0.2*sin(s.x*0.1)+0.2*cos(time*0.5));
 
 
 
 //color shader 
-let offsetX = input(3460, 0, 4000);
-let offsetY = input(3590, 0, 4000);
+let offsetX = input(243, 0, 4000);
+let offsetY = input(1150, 0, 4000);
 let offsetZ = input(1032, 0, 4000);
 function fbm(p) {
   return vec3(
