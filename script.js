@@ -31,7 +31,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
 let scene = new Scene();
 
 let camera = new PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-    camera.position.set( 0.5, 0.5, 1.0 );
+    camera.position.set( 0.5, 0.1, 1.4 );
 
 let renderer = new WebGLRenderer({ antialias: true, transparent: true });
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -50,7 +50,7 @@ let state = {
   offY: -0.9,
   petal: 0.55,
   fuse: -1.3,
-  numPoints: 26,
+  numPoints: 32,
   rotX: 20,
   rotY: 20,
   offsetX:1000,
@@ -63,7 +63,8 @@ let state = {
   scaledAudio: 0,
   lowAudio: 0,
   hiAudio: 0,
-  midAudio: 0
+  midAudio: 0,
+  volume:0,
 }
 
 
@@ -79,9 +80,9 @@ const canvas = document.createElement( 'canvas' );
 const context = canvas.getContext( '2d' );
 const gradient = context.createLinearGradient( 0, 0, 0, 32 );
 
-      gradient.addColorStop( 0.0, '#BBB0D6' );
+      gradient.addColorStop( 0.0,'#C1EFF8' );
       gradient.addColorStop( 0.5, '#F7FACD' );
-      gradient.addColorStop( 1.0, '#C1EFF8' );
+      gradient.addColorStop( 1.0,  '#BBB0D6' );
       context.fillStyle = gradient;
       context.fillRect( 0, 0, 1, 32 );
 
@@ -96,18 +97,16 @@ scene.add( sky );
 
 
 
-
-
 // Create a basic geometry
 let geometry  = new SphereGeometry(2, 45, 45);
 
 // The shader is like 3d texture of the object
 let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
   return {
-    offX: -0.9+state.midAudio,
-    offY: -0.8+state.avgAudio,
+    offX: state.offX,
+    offY: state.offY,
     petal: state.petal,
-    fuse: -1.2+state.hiAudio,
+    fuse: -0.8+state.hiAudio,
     numPoints: state.numPoints,
     rotX: state.rotX,
     rotY: state.rotY,
@@ -119,62 +118,25 @@ let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
 scene.add(mesh);
 
 
-
-
 //// GUI 
 // Uncomment when debugging
 // *For some reason, using the GUI makes the rendering slow, while directly sending the sound signal to control is smooth.
 
-const gui = new GUI();
+// const gui = new GUI();
 
-gui.add( state, 'offsetX', 0, 2000 ).name( 'colorX' ).onChange( function ( value ) {
-		state.offX = value;
-	render();
-} );
-gui.add( state, 'offsetY', 0, 2000).name( 'colorY' ).onChange( function ( value ) {
-		state.offY = value;
-	render();
-} );
-gui.add( state, 'offsetZ', 0,2000 ).name( 'colorZ' ).onChange( function ( value ) {
-		state.offZ = value;
-	render();
-} );
-// gui.add( state, 'offX', -1, 1 ).step( 0.01 ).name( 'offX' ).onChange( function ( value ) {
+// gui.add( state, 'offsetX', 0, 2000 ).name( 'colorX' ).onChange( function ( value ) {
 // 		state.offX = value;
 // 	render();
-
 // } );
-
-// gui.add( state, 'offY', -1, 1 ).step( 0.01 ).name( 'offY' ).onChange( function ( value ) {
+// gui.add( state, 'offsetY', 0, 2000).name( 'colorY' ).onChange( function ( value ) {
 // 		state.offY = value;
 // 	render();
 // } );
-
-// gui.add( state, 'petal', 0, 1 ).step( 0.1 ).name( 'petal' ).onChange( function ( value ) {
-// 		state.petal = value;
+// gui.add( state, 'offsetZ', 0,2000 ).name( 'colorZ' ).onChange( function ( value ) {
+// 		state.offZ = value;
 // 	render();
 // } );
 
-// gui.add( state, 'fuse', -2, 2 ).step( 0.01 ).name( 'fuse' ).onChange( function ( value ) {
-// 		state.fuse = value;
-// 	render();
-// } );
-
-// gui.add( state, 'numPoints', 0, 40 ).step( 1 ).name( 'numPoints' ).onChange( function ( value ) {
-// 		state.numPoints = value;
-// 	render();
-// } );
-
-// gui.add( state, 'rotX', 0, 10 ).step( 1 ).name( 'rotX' ).onChange( function ( value ) {
-// 		state.numPoints = value;
-// 	render();
-
-// } );
-
-// gui.add( state, 'rotY', 0, 10 ).step( 1 ).name( 'rotY' ).onChange( function ( value ) {
-// 		state.numPoints = value;
-// 	render();
-// } );
 
 
 // Add mouse controlls
@@ -184,37 +146,6 @@ let controls = new OrbitControls( camera, renderer.domElement, {
   zoomSpeed : 0.5,
   rotateSpeed : 0.5
 } );
-
-// // AUDIO
-
-// let button = document.querySelector('.button');
-//     button.innerHTML = "Loading Audio..."
-
-// // create an AudioListener and add it to the camera
-// const listener = new AudioListener();
-// camera.add( listener );
-
-// // create an Audio source
-// const sound = new Audio( listener );
-
-// // load a sound and set it as the Audio object's buffer
-// const audioLoader = new AudioLoader();
-// audioLoader.load( 'https://cdn.glitch.me/d0cdb937-b74c-4381-bd5e-899273644164/BUB5.wav?v=1683312121396', function( buffer ) {
-//   sound.setBuffer( buffer );
-//   sound.setLoop(true);
-//   sound.setVolume(0.5);
-//   button.innerHTML = "Play Audio"
-//   button.addEventListener('pointerdown', () => {
-//     button.style.display = 'none';
-//     sound.play();
-//   }, false);
-// });
-
-// // create an AudioAnalyser, passing in the sound and desired fftSize
-// // get the average frequency of the sound
-// const analyser = new AudioAnalyser( sound, 32 );
-
-
 
 
     // Create an array to hold the frequency data
@@ -239,32 +170,53 @@ let render = () => {
     for (let i = 0; i < frequencyData.length; i++) {
       sum += frequencyData[i];
     }
-    avgFrequency = sum / frequencyData.length;
+    avgFrequency =Math.pow((sum / frequencyData.length)/255,0.4);
     // Map the frequency date from 0-255 to 0-1 
     //state.scaledAudio = ((( avgFrequency-35)/ 70) * 0.7) + 0.3;
     state.scaledAudio = Math.pow(( frequencyData[1]/255)*0.8,6)*10;
     // smooth the change, we're getting 80% of the previous audio and 20% of the current 
-    state.avgAudio= Math.sin(.2 * state.scaledAudio + .8 * state.avgAudio); 
-    
-    //state.midAudio = Math.sin((.2 * ((-frequencyData[10]+frequencyData[30])/100)  + .8 * state.midAudio));
+    state.avgAudio= .2 * state.scaledAudio + .8 * state.avgAudio; 
+    state.offX = Math.max(-0.8, Math.min(0.8, -0.2 + state.avgAudio));
 
+    // Calculate the volume based on the average amplitude
+    state.volume =.2* avgFrequency+.8*state.volume ;
+    state.offY = Math.max(-0.8, Math.min(0.8, -0.8 + state.volume));
     // //Use three frequency bands of sound as parameters
-    // state.lowAudio = (((analyser.getFrequencyData()[2]-200) / 40)*2-1) * 1;
-    midScale = Math.pow((frequencyData[25])/100,2)*2;
-    state.midAudio = .3 * midScale  + .7 * state.midAudio;
-    state.hiAudio = .2 * (Math.pow(frequencyData[16]/ 255,2)*4) + .8 * state.hiAudio;
     
-    //console.log(state.avgAudio);
-    //console.log('avg',frequencyData);
-    console.log('mid',state.midAudio);
-    console.log('avg',state.avgAudio);
-    console.log('osc',state.hiAudio);
-    //console.log('vol',sound.getVolume());
+    // midScale = Math.pow((frequencyData[16])/255,0.8)*4;
+    // state.midAudio = .3 * midScale  + .7 * state.midAudio;
+
+     state.hiAudio = .2 * (Math.pow(frequencyData[31]/ 255,2)*6) + .8 * state.hiAudio;
+     // Get the values at indices 10 and 20 in the frequency data array
+     const value1 = frequencyData[10];
+     const value2 = frequencyData[21];
+
+    // Calculate the proportion of value1 and value2 in the frequency data
+    const proportion1 = value1 /255;
+    const proportion2 = value2 /255;
+    const sub =6*(proportion1-proportion2);
+    
+    state.midAudio = .3 * sub  + .7 * state.midAudio;
+
+    //console.log('avg',state.avgAudio);
+    //console.log('osc',state.hiAudio);
+
+    //console.log('mid', state.midAudio);
+    console.log('offX',state.offX);
+    // console.log('ary',frequencyData);
+    console.log('vol',state.volume);
+    console.log('offY',state.offY);
+
+    const angle = Math.sin(state.time*0.01) * Math.PI / 16; // Adjust this value to control the lift angle
+
+    camera.rotation.x = angle;
+  
 
   }
 
 
   renderer.render( scene, camera );
+
 };
 
 render();
