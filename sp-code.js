@@ -14,7 +14,7 @@ let rotX= input(20);
 let rotY= input();
 
 rotateX(6*length(s)+cos(s.x*0.8));  //change with time
-rotateX(6*length(s)+0.2*sin(s.y*0.5)+0.2*cos(time*0.5));
+rotateX(6*length(s)+0.2*sin(s.y*0.5)+cos(time*0.5));
 
 
 

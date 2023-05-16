@@ -31,7 +31,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
 let scene = new Scene();
 
 let camera = new PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-    camera.position.set( 0.5, 0.1, 1.4 );
+    camera.position.set( 0.5, 0.1, 1.65 );
 
 let renderer = new WebGLRenderer({ antialias: true, transparent: true });
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -106,7 +106,7 @@ let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
     offX: state.offX,
     offY: state.offY,
     petal: state.petal,
-    fuse: -0.8+state.hiAudio,
+    fuse: -1.2+state.hiAudio,
     numPoints: state.numPoints,
     rotX: state.rotX,
     rotY: state.rotY,
@@ -176,17 +176,19 @@ let render = () => {
     state.scaledAudio = Math.pow(( frequencyData[1]/255)*0.8,6)*10;
     // smooth the change, we're getting 80% of the previous audio and 20% of the current 
     state.avgAudio= .2 * state.scaledAudio + .8 * state.avgAudio; 
-    state.offX = Math.max(-0.8, Math.min(0.8, -0.2 + state.avgAudio));
+    //state.offX = Math.max(-0.6, Math.min(0.6, 1-state.avgAudio))+0.1*Math.sin(state.time*0.01);
+    state.offX = -0.8+state.avgAudio;
 
     // Calculate the volume based on the average amplitude
     state.volume =.2* avgFrequency+.8*state.volume ;
+    //state.offY =Math.max(-0.55, Math.min(0.6, 1-state.volume))+0.1*Math.sin(state.time*0.01);
     state.offY = Math.max(-0.8, Math.min(0.8, -0.8 + state.volume));
     // //Use three frequency bands of sound as parameters
     
     // midScale = Math.pow((frequencyData[16])/255,0.8)*4;
     // state.midAudio = .3 * midScale  + .7 * state.midAudio;
 
-     state.hiAudio = .2 * (Math.pow(frequencyData[31]/ 255,2)*6) + .8 * state.hiAudio;
+     state.hiAudio = .2 * (Math.pow(frequencyData[26]/ 255,2)*6) + .8 * state.hiAudio;
      // Get the values at indices 10 and 20 in the frequency data array
      const value1 = frequencyData[10];
      const value2 = frequencyData[21];
